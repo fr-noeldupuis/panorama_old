@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:panorama/feature/accounts/accounts_page.dart';
-import 'package:panorama/feature/core/appbar.dart';
+import 'package:panorama/feature/core/app_bar.dart';
 import 'package:panorama/feature/core/body.dart';
 import 'package:panorama/feature/core/bottom_navigation_bar.dart';
 import 'package:panorama/feature/core/fab.dart';
 import 'package:panorama/feature/navigation/bloc/app_navigation_bloc.dart';
 import 'package:panorama/utils/simple_bloc_observer.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Hive.initFlutter();
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
 
   Bloc.observer = SimpleBlocObserver();
 
