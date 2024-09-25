@@ -2,7 +2,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:panorama/feature/accounts/accounts_page.dart';
 import 'package:panorama/feature/core/appbar.dart';
 import 'package:panorama/feature/core/body.dart';
 import 'package:panorama/feature/core/bottom_navigation_bar.dart';
@@ -61,13 +61,31 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       home: BlocProvider(
         create: (context) => AppNavigationBloc(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const PanoramaAppBarTitle(),
-          ),
-          body: const PanoramaBody(),
-          floatingActionButton: PanoramaFloatingActionButton(),
-          bottomNavigationBar: const PanoramaBottomNavBar(),
+        child: BlocBuilder<AppNavigationBloc, AppNavigationState>(
+          builder: (context, state) {
+            switch (state.currentPage) {
+              case AppPageEnum.accounts:
+                return const AccountsPage();
+              case AppPageEnum.categories:
+                return Scaffold(
+                  appBar: AppBar(
+                    title: PanoramaAppBarTitle(),
+                  ),
+                  body: PanoramaBody(),
+                  floatingActionButton: PanoramaFloatingActionButton(),
+                  bottomNavigationBar: const PanoramaBottomNavBar(),
+                );
+              case AppPageEnum.transactions:
+                return Scaffold(
+                  appBar: AppBar(
+                    title: PanoramaAppBarTitle(),
+                  ),
+                  body: PanoramaBody(),
+                  floatingActionButton: PanoramaFloatingActionButton(),
+                  bottomNavigationBar: const PanoramaBottomNavBar(),
+                );
+            }
+          },
         ),
       ),
     );
