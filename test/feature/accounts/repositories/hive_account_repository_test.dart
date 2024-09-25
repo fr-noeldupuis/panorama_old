@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:panorama/feature/accounts/model/account.dart';
@@ -24,6 +25,7 @@ void main() {
       accountName: 'Test Account',
       accountType: AccountType.bankAccount,
       initialBalance: 100.0,
+      colorValue: Colors.red.value,
     );
 
     test('addAccount should store an account in the box', () async {

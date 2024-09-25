@@ -33,15 +33,36 @@ class PanoramaBottomNavBar extends StatelessWidget {
           },
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(FontAwesome.building_columns_solid),
+              icon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                child: Icon(FontAwesome.credit_card_solid),
+              ),
+              activeIcon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 7.0, 0, 7.0),
+                child: Icon(FontAwesome.credit_card_solid, size: 26),
+              ),
               label: 'Accounts',
             ),
             BottomNavigationBarItem(
-              icon: Icon(FontAwesome.chart_pie_solid),
+              icon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                child: Icon(TeenyIcons.donut_chart),
+              ),
+              activeIcon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 7.0, 0, 7.0),
+                child: Icon(TeenyIcons.donut_chart, size: 26),
+              ),
               label: 'Categories',
             ),
             BottomNavigationBarItem(
-              icon: Icon(FontAwesome.list_solid),
+              icon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                child: Icon(FontAwesome.list_solid),
+              ),
+              activeIcon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 7.0, 0, 7.0),
+                child: Icon(FontAwesome.list_solid, size: 26),
+              ),
               label: 'Transactions',
             ),
           ],

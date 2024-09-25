@@ -9,4 +9,14 @@ sealed class AccountPageState extends Equatable {
 
 abstract class AccountPageActionState extends AccountPageState {}
 
-final class AccountPageInitial extends AccountPageState {}
+class AccountPageInitial extends AccountPageState {}
+
+class AccountPageLoading extends AccountPageState {}
+
+class AccountPageLoaded extends AccountPageState {
+  final List<Account> accounts;
+
+  const AccountPageLoaded(this.accounts);
+}
+
+class AccountPageError extends AccountPageState {}

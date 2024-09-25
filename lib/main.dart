@@ -2,6 +2,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:panorama/feature/accounts/account_page_bloc/account_page_bloc.dart';
 import 'package:panorama/feature/accounts/accounts_page.dart';
 import 'package:panorama/feature/accounts/model/account.dart';
 import 'package:panorama/feature/accounts/repositories/account_repository.dart';
@@ -26,9 +27,10 @@ void main() async {
 
   // Open Hive box
   final accountBox = await Hive.openBox<Account>('accountsBox');
+  await accountBox.clear(); // Clear box for testing
 
   // Create the repository
-  final accountRepository = HiveAccountRepository(accountBox);
+  final AccountRepository accountRepository = HiveAccountRepository(accountBox);
 
   Bloc.observer = SimpleBlocObserver();
 
@@ -36,58 +38,59 @@ void main() async {
 }
 
 class MainApp extends StatelessWidget {
-  final HiveAccountRepository accountRepository;
+  final AccountRepository accountRepository;
   const MainApp({super.key, required this.accountRepository});
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(
-          create: (context) => accountRepository,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.cyanM3,
+        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        blendLevel: 7,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 10,
+          blendOnColors: false,
+          useTextTheme: true,
+          useM2StyleDividerInM3: true,
+          alignedDropdown: true,
+          useInputDecoratorThemeInDialogs: true,
         ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: FlexThemeData.light(
-          scheme: FlexScheme.cyanM3,
-          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-          blendLevel: 7,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 10,
-            blendOnColors: false,
-            useTextTheme: true,
-            useM2StyleDividerInM3: true,
-            alignedDropdown: true,
-            useInputDecoratorThemeInDialogs: true,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: true,
-          swapLegacyOnMaterial3: true,
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        swapLegacyOnMaterial3: true,
+      ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.cyanM3,
+        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        blendLevel: 13,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 20,
+          useTextTheme: true,
+          useM2StyleDividerInM3: true,
+          alignedDropdown: true,
+          useInputDecoratorThemeInDialogs: true,
         ),
-        darkTheme: FlexThemeData.dark(
-          scheme: FlexScheme.cyanM3,
-          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-          blendLevel: 13,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 20,
-            useTextTheme: true,
-            useM2StyleDividerInM3: true,
-            alignedDropdown: true,
-            useInputDecoratorThemeInDialogs: true,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: true,
-          swapLegacyOnMaterial3: true,
-        ),
-        themeMode: ThemeMode.light,
-        home: BlocProvider(
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        swapLegacyOnMaterial3: true,
+      ),
+      themeMode: ThemeMode.light,
+      home: RepositoryProvider(
+        create: (context) => accountRepository,
+        child: BlocProvider(
           create: (context) => AppNavigationBloc(),
           child: BlocBuilder<AppNavigationBloc, AppNavigationState>(
             builder: (context, state) {
               switch (state.currentPage) {
                 case AppPageEnum.accounts:
-                  return const AccountsPage();
+                  return BlocProvider(
+                    create: (context) =>
+                        AccountPageBloc(accountRepository: accountRepository)
+                          ..add(LoadAccounts()),
+                    child: const AccountsPage(),
+                  );
                 case AppPageEnum.categories:
                   return Scaffold(
                     appBar: AppBar(

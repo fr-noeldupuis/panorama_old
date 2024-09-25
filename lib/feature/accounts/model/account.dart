@@ -35,11 +35,15 @@ class Account extends HiveObject {
   @HiveField(3)
   final double initialBalance;
 
+  @HiveField(4)
+  final int colorValue;
+
   // Constructor
   Account({
     String? id,
     required this.accountName,
     required this.accountType,
     required this.initialBalance,
+    required this.colorValue,
   }) : id = id ?? const Uuid().v4();
 }

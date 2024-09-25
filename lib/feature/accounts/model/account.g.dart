@@ -21,13 +21,14 @@ class AccountAdapter extends TypeAdapter<Account> {
       accountName: fields[1] as String,
       accountType: fields[2] as AccountType,
       initialBalance: fields[3] as double,
+      colorValue: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Account obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class AccountAdapter extends TypeAdapter<Account> {
       ..writeByte(2)
       ..write(obj.accountType)
       ..writeByte(3)
-      ..write(obj.initialBalance);
+      ..write(obj.initialBalance)
+      ..writeByte(4)
+      ..write(obj.colorValue);
   }
 
   @override
